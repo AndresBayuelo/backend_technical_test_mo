@@ -1,8 +1,8 @@
-from django.urls import re_path
-from . import views
+from rest_framework import routers
+from .views import UserViewSet
 
-urlpatterns = [
-    re_path('signup', views.signup),
-    re_path('login', views.login),
-    re_path('test_token', views.test_token),
-]
+router = routers.DefaultRouter()
+
+router.register('api-auth', UserViewSet, 'api-auth')
+
+urlpatterns = router.urls
