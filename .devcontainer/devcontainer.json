@@ -24,9 +24,12 @@
 		"vscode": {		
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
+				"ms-python.isort",
+				"thebarkman.vscode-djaneiro",
 				"usernamehw.errorlens",
 				"rangav.vscode-thunder-client",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"mintlify.document"
 			]
 		}
 	}
