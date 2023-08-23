@@ -3,6 +3,7 @@ from typing import Any
 from rest_framework import viewsets
 from rest_framework.authentication import (SessionAuthentication,
                                            TokenAuthentication)
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -11,6 +12,8 @@ from .repositories.customer_repository_pgsql import CustomerRepositoryPgsql
 from .serializers import CustomerSerializer
 from .use_cases.create_customer import CreateCustomerUseCase
 from .use_cases.create_customer_api import CreateCustomerApiUseCase
+from .use_cases.balance import BalanceUseCase
+from .use_cases.balance_api import BalanceApiUseCase
 
 
 class CustomerViewSet(viewsets.ViewSet):
@@ -40,6 +43,7 @@ class CustomerViewSet(viewsets.ViewSet):
         super().__init__(**kwargs)
         self.customer_repository: CustomerRepository = CustomerRepositoryPgsql()
         self.create_customer_use_case: CreateCustomerUseCase = CreateCustomerApiUseCase()
+        self.balace_use_case: BalanceUseCase = BalanceApiUseCase()
 
     def list(self, request)-> Response:
         """Get all customers.
@@ -82,3 +86,22 @@ class CustomerViewSet(viewsets.ViewSet):
            0 The response of the creation.
         """
         return self.create_customer_use_case.create(request.data)
+
+    @action(
+        methods=['get'], 
+        detail=True,
+    )
+    def get_balance(self, request, pk=None)-> Response:
+        """Get the balance of a customer.
+
+        Parameters
+        ----------
+        pk : str
+            The external id of the customer to get the balance.
+
+        Returns
+        -------
+        Response
+            The response of the request.
+        """
+        return self.balace_use_case.get(pk)
